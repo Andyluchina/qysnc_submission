@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-OUT = os.path.join(HERE, "..", "..", "graphs_duplicated", "e1_throughput_vs_n.png")
+OUT = os.path.join(HERE, "..", "..", "graphs", "e1_throughput_vs_n.png")
 BASE = os.path.join(HERE, "..", "..", "results", "e1_n_sweep_eno1")
 
 plt.rcParams.update({

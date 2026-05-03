@@ -159,7 +159,7 @@
     }
   },
   "notes": {
-    "qsync_flood": "real data: ds18 floods ds15/16/17 over eno2 (192.168.1.x) at 870 Mbps UDP + 50 kpps SYN",
+    "qsync_flood": "real data: server4 floods server1/16/17 over eno2 (192.168.1.x) at 870 Mbps UDP + 50 kpps SYN",
     "sync_flood": "PROJECTED collapse: sweep produced bogus data (P0 partial run)",
     "async_flood": "PROJECTED: Castor offline-bound; flood doesn't change combined throughput",
     "async_normal": "PROJECTED: combined offline+online throughput estimated from DM scaling (~500 mul/s)"

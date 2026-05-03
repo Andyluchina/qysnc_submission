@@ -1,1 +1,0 @@
-/usr/lib64/ccache/c++ -march=native -maes -mrdseed -lntl -g CMakeFiles/timesrc_probe.dir/main.cpp.o -o ../../timesrcd/timesrc_probe  ../../src/time/libAsteriskTime.a -lrt -pthread 
