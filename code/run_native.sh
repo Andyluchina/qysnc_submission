@@ -1,20 +1,3 @@
-#!/bin/bash
-# Run Asterisk MPC distributedly across up to 7 machines on eno1 (no TSN).
-# Local (party 0):    /root/asterisk-native-non_tsn/
-# Remote (1..6):      /tmp/asterisk-native-non_tsn/
-#
-# Party layout (eno1, public 1 GbE):
-#   P0 = local         158.130.54.27
-#   P1 = ds15          158.130.54.122
-#   P2 = ds16          158.130.54.133
-#   P3 = ds17          158.130.54.19
-#   P4 = ds18          158.130.54.20
-#   P5 = ds13          158.130.54.123  (added 2026-04-25, eno1 only)
-#   P6 = ds11          158.130.54.124  (added 2026-04-25, eno1 only)
-#
-# `-n` here means number-of-compute-parties (matches existing code_host
-# convention); n=6 → 6 compute parties + 1 dealer = 7 total.
-
 set -u
 
 LOCAL_ROOT=/root/asterisk-native-non_tsn
