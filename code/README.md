@@ -28,6 +28,15 @@ qsync-ae/
 └── results/                    Output directory
 ```
 
+Unchanged
+```
+(byte-identical to code_host/src/): src/asterisk/, src/assistedMPC/, src/utils/, and most of benchmark/.
+```
+
+New (qsync-only):
+```
+ src/io/bcast_bus.{h,cpp}, src/io/aes_ctr.h, src/io/_legacy/, src/net/tdma_scheduler.{h,cpp}, src/time/, plus a full rewrite of src/io/netmp.h.
+```
 ## How it works at a glance
 
 - **Circuit evaluation.** The protocol takes an arithmetic circuit
