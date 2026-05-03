@@ -1,127 +1,83 @@
-# Asterisk MPC — Native Distributed Setup
+# qsync
 
-Runs Asterisk MPC across 5 physical machines at UPenn CIS without Docker.
+A multi-party computation (MPC) system that runs over a synchronized
+network. Parties exchange shares of secret data, evaluate an arithmetic
+circuit together, and reconstruct only the final output — no party
+ever learns another party's input.
 
-## Party layout (n=4)
+## What's in here
 
-| Party | Role | Machine | IP |
-|-------|------|---------|-----|
-| 0 | Dealer | local | 158.130.54.27 |
-| 1 | Compute | ds15.seas.upenn.edu | 158.130.54.122 |
-| 2 | Compute | ds16.seas.upenn.edu | 158.130.54.133 |
-| 3 | Compute | ds17.seas.upenn.edu | 158.130.54.19 |
-| 4 | Compute | ds18.seas.upenn.edu | 158.130.54.20 |
-
-SSH access configured in `~/.ssh/config` with key `~/.ssh/ds_upenn`.
-
-## Code locations on each machine
-
-| Machine | Source tree | Compiled binary | Runtime libs | Notes |
-|---------|-------------|-----------------|--------------|-------|
-| **Local** | `/root/asterisk-native/` | `/root/asterisk-native/build/benchmarks/asterisk_mpc` | system (dnf-installed) | Fedora 34, glibc 2.33 |
-| **ds15** | — | `/tmp/asterisk-native/build/benchmarks/asterisk_mpc` | `/tmp/asterisk-native/lib/` | `/root` is full — must use `/tmp` |
-| **ds16** | `/tmp/asterisk-native/` | `/tmp/asterisk-native/build/benchmarks/asterisk_mpc` | `/tmp/asterisk-native/lib/` | **Build machine** — NTL/emp-tool/json installed here from source |
-| **ds17** | — | `/tmp/asterisk-native/build/benchmarks/asterisk_mpc` | `/tmp/asterisk-native/lib/` | Fedora 35 (matches ds16 glibc) |
-| **ds18** | — | `/tmp/asterisk-native/build/benchmarks/asterisk_mpc` | `/tmp/asterisk-native/lib/` | Fedora 35 (matches ds16 glibc) |
-
-**Key detail:** Local machine is Fedora 34 (glibc 2.33), DS machines are Fedora 35 (glibc 2.34). This means there are **two binaries** built separately:
-
-- `local-built binary` — runs on the local host only
-- `ds16-built binary` — runs on all 4 DS machines (ds15/16/17/18 all have the same glibc)
-
-## Shared config
-
-- **Net config** (party IP list): `/tmp/asterisk_bundle/net_config.json` on all machines
-  ```json
-  ["158.130.54.27","158.130.54.122","158.130.54.133","158.130.54.19","158.130.54.20"]
-  ```
-- **Firewall**: TCP + UDP ports 10000–10100 open on all 5 machines (MPC traffic; UDP since the transport was moved to UDP+TDMA — see [TDMA_UDP_NOTES.md](TDMA_UDP_NOTES.md))
-
-## Running
-
-```bash
-bash /root/asterisk-native/run_native.sh <gates_per_level> <depth> <repeat>
-# e.g.
-bash /root/asterisk-native/run_native.sh 500 50 1          # small circuit, 25K gates
-bash /root/asterisk-native/run_native.sh 10000 100 1       # 1M gates, standard benchmark
+```
+qsync-ae/
+├── code/                       MPC source + build
+│   ├── src/
+│   │   ├── asterisk/           Maliciously-secure MPC protocol
+│   │   ├── assistedMPC/        Trusted-dealer MPC variant
+│   │   ├── net/                Software TDMA scheduler
+│   │   ├── io/                 Reliable broadcast bus (UDP + AES-CTR)
+│   │   ├── time/               Time client (PTP-backed slot clock)
+│   │   └── utils/              Circuit, share types, helpers
+│   └── benchmark/              Application benchmarks (darkpool, etc.)
+├── scripts/
+│   ├── taprio/                 Hardware TSN (taprio) GCL configuration
+│   ├── sweeps_tsn/             Sweeps over hardware TSN
+│   ├── sweeps_software_tdma/   Sweeps over software TDMA
+│   ├── fault_tolerance/        Crash, blacklist, and flood experiments
+│   ├── plotting/               Aggregation + figure scripts
+│   └── net_configs/            Per-N host-list JSONs
+└── results/                    Output directory
 ```
 
-Results land in `/root/asterisk-native/results/partyN.log`.
+## How it works at a glance
 
-The runner starts a `timesrcd` daemon (PTP-capable shared clock) on each
-host before launching parties and kills it on exit. UDP + TDMA is the
-default transport; see [TDMA_UDP_NOTES.md](TDMA_UDP_NOTES.md) for env
-vars (`TIMESRC_BACKEND`, `TDMA_SLOT_NS`, `TDMA_DISABLED`, etc.).
+- **Circuit evaluation.** The protocol takes an arithmetic circuit
+  (`utils/circuit`), splits each input into authenticated additive
+  shares (`AuthAddShare` in `asterisk/sharing.h`), evaluates gate by
+  gate, and at the end runs a MAC check
+  (`OnlineEvaluator::MACVerification`) that aborts if any party
+  cheated.
+- **Time-sliced sending.** Every outbound datagram passes through a
+  TDMA gate (`net/tdma_scheduler`) that pins the party to its assigned
+  slot in a repeating cycle, so traffic doesn't collide on the wire.
+- **Reliable broadcast.** All party-to-party messages go over a single
+  encrypted UDP broadcast bus (`io/bcast_bus`) with sequence numbers,
+  NACK-driven retransmission, third-party witness NACKs, and per-pipe
+  poisoning that quarantines a peer once it stops responding or sends
+  unauthenticated frames.
 
-## Modifying the code & recompiling
-
-The canonical source tree is `/root/asterisk-native/` on the local machine. Edit files under `src/` (protocol implementation) or `benchmark/` (drivers) there, then:
-
-### Step 1 — Rebuild locally (for party 0)
-
-```bash
-cd /root/asterisk-native/build
-make -j$(nproc) asterisk_mpc
-```
-
-The resulting binary at `/root/asterisk-native/build/benchmarks/asterisk_mpc` runs as party 0 (local).
-
-### Step 2 — Push source changes to ds16 and rebuild
-
-ds16 is the "build server" for DS machines. Sync changes there:
+## Build and run
 
 ```bash
-rsync -az --exclude='build' /root/asterisk-native/{src,benchmark,CMakeLists.txt,cmake} ds16:/tmp/asterisk-native/
-ssh ds16 'cd /tmp/asterisk-native/build && make -j$(nproc) asterisk_mpc'
+cd code
+./setup_and_build.sh                  # builds into ./build
+./run_native.sh                       # single-host smoke test
 ```
 
-### Step 3 — Distribute the ds16 binary to ds15/ds17/ds18
+To run on a cluster, point each host at a `net_config` JSON from
+`scripts/net_configs/` and launch the same binary on every party.
 
-After ds16 finishes building, copy the new binary out:
+## Network setup
 
-```bash
-for h in ds15 ds17 ds18; do
-    scp ds16:/tmp/asterisk-native/build/benchmarks/asterisk_mpc $h:/tmp/asterisk-native/build/benchmarks/asterisk_mpc
-done
-```
+Two transport modes are supported:
 
-### Step 4 — Run again
+- **Software TDMA** — the included `TDMAScheduler` paces every send to
+  the party's slot. Requires a shared time source (PTP).
+- **Hardware TSN** — Linux `taprio` qdisc enforces the slot schedule
+  in the NIC. Install with `scripts/taprio/install_taprio_ds15pat.sh`
+  on each TSN host.
 
-```bash
-bash /root/asterisk-native/run_native.sh 500 50 1
-```
+UDP ports 10000–10100 must be open on every host; firewall rules for
+TCP do not cover UDP.
 
-## Dependencies
+## Output
 
-Installed once per machine (already done on all 5). Full install commands live in `setup_and_build.sh`.
+Sweeps write into `results/<experiment_name>/`:
 
-**Local machine (Fedora 34):**
-- System packages (dnf): `gcc-c++ cmake gmp-devel openssl-devel boost-devel ntl-devel`
-- From source to `/usr/local/`: `nlohmann/json v3.11.3`, `emp-tool` (latest)
+- `summary.tsv` — one row per cell (status, timing, throughput)
+- `per_party.tsv` — per-party breakdowns
+- `progress.log` — sweep driver log
+- per-cell subdirectories with `launcher.log` and `partyN.log`
 
-**ds16 (Fedora 35, build server):**
-- System packages (dnf): same as above except `ntl-devel` not in repo, built from source
-- From source to `/usr/local/`: `NTL 11.5.1`, `nlohmann/json v3.11.3`, `emp-tool`
-
-**ds15, ds17, ds18 (Fedora 35):**
-- System packages (dnf): `boost-devel` (needed for runtime libs `libboost_program_options.so.1.76.0`, etc.)
-- The `libntl.so.44` and `libemp-tool.so` are copied from ds16 into `/tmp/asterisk-native/lib/`
-
-## From-scratch setup on a new Fedora machine
-
-```bash
-rsync -az --exclude='build' /root/asterisk-native/ <new-host>:/tmp/asterisk-native/
-ssh <new-host> 'bash /tmp/asterisk-native/setup_and_build.sh'
-# Make sure TCP ports 10000-10100 are open
-ssh <new-host> 'firewall-cmd --add-port=10000-10100/tcp --permanent && firewall-cmd --reload'
-```
-
-## Troubleshooting
-
-**`GLIBC_2.34 not found`** — You tried to run a ds16-built binary on a Fedora 34 machine. Rebuild on that machine's own glibc.
-
-**`Connection refused` on MPC ports** — Firewall blocking 10000–10100. Run `firewall-cmd --add-port=10000-10100/tcp --permanent && firewall-cmd --add-port=10000-10100/udp --permanent && firewall-cmd --reload`.
-
-**Party 0 hangs at startup** — Party 0 connects to higher-PID parties, so those must be listening first. The runner already launches in reverse order (4→3→2→1→0) with small delays.
-
-**No space on device (ds15)** — ds15's `/` is 100% full. Never write to `/root` on ds15; `/tmp` is tmpfs with 32 GB free.
+Software-TDMA runs additionally emit `timesrcd_local.log`. A party that
+logs `TDMAScheduler: no TimeSource; scheduling disabled` has fallen
+out of slot-pacing and that cell should be re-run.
