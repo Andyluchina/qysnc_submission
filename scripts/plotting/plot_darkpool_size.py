@@ -20,7 +20,7 @@ plt.rcParams.update({
     "lines.markersize": 8,
 })
 
-OUT = os.path.join(HERE, "..", "..", "graphs", "darkpool_size_sweep_latency.png")
+OUT = os.path.join(HERE, "..", "..", "graphs_duplicated", "darkpool_size_sweep_latency.png")
 
 def load(path):
     by_b = defaultdict(list)

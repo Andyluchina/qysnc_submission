@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-OUT = os.path.join(HERE, "..", "..", "graphs", "motivation_v2.png")
+OUT = os.path.join(HERE, "..", "..", "graphs_duplicated", "motivation_v2.png")
 BASE = os.path.join(HERE, "..", "..", "results", "motivation_v2")
 
 # Sharp/large fonts

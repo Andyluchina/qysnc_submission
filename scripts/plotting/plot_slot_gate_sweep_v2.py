@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-OUT = os.path.join(HERE, "..", "..", "graphs", "slot_gate_sweep_throughput.png")
+OUT = os.path.join(HERE, "..", "..", "graphs_duplicated", "slot_gate_sweep_throughput.png")
 PATH = os.path.join(HERE, "..", "..", "results", "slot_sweep_n4", "summary.tsv")
 
 plt.rcParams.update({
