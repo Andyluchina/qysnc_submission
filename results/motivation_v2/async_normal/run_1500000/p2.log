@@ -1,0 +1,27 @@
+--- Details ---
+depth: 100
+gates_per_level: 15000
+num-parties: 3
+pid: 2
+security_param: 128
+seed: 200
+threads: 64
+
+--- Circuit ---
+Input: 15000
+Addition: 0
+Multiplication: 1500000
+Subtraction: 0
+Addition with constant: 0
+Multiplication with constant: 0
+Invalid: 0
+Total: 1515000
+Depth: 101
+
+time: 21388.133744 ms
+sent: 12000824 bytes
+
+--- Statistics ---
+peak_resident_set_size: 3246148
+peak_virtual_memory: 4294296
+

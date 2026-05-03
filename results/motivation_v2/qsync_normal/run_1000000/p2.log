@@ -1,0 +1,48 @@
+--- Details ---
+depth: 100
+gates_per_level: 10000
+num-parties: 3
+pid: 2
+repeat: 1
+security_param: 128
+seed: 200
+threads: 6
+
+--- Circuit ---
+Input: 10000
+Addition: 0
+Multiplication: 1000000
+Multiplication with Fan-in 3: 0
+Multiplication with Fan-in 4: 0
+Subtraction: 0
+Addition with constant: 0
+Multiplication with constant: 0
+ReLU: 0
+MSB: 0
+Equals to zero: 0
+Less than zero: 0
+Dotproduct: 0
+Dotproduct with truncation: 0
+Invalid: 0
+Total: 1010000
+Depth: 101
+
+TIMER pid=2 off_eval.run()=2644.18 ms
+TIMER pid=2 online_loop=19221.63 ms
+--- Repetition 1 ---
+time: 21932.471379 ms
+sent: 10666400 bytes
+
+--- Statistics ---
+peak_resident_set_size: 1094008
+peak_virtual_memory: 1807240
+
+BcastBus[p=2]: drop_self=8004 witness_disp=25265 drop_unkn=0 tnacks=0 wnacks=0 nack_origin_drop=0 nack_recv=272
+  tx[0]: app_bytes=0 tx_dg=0 retx=0 evict=0 poisoned=0
+  tx[1]: app_bytes=5332800 tx_dg=4002 retx=0 evict=0 poisoned=0
+  tx[3]: app_bytes=5333600 tx_dg=4002 retx=0 evict=0 poisoned=0
+  rx[0]: rx_dg=0 poisoned=0
+  rx[1]: rx_dg=4002 poisoned=0
+  rx[3]: rx_dg=4002 poisoned=0
+TDMAScheduler[p=2]: slot_ns=1048544 cycle_slots=4 waits=201 ns_waited=545788519 sends={in=7998 out=6 boundary_spans=6}
+TDMAScheduler[p=2]: per-slot send counts: slot0(oth)=0 slot1(oth)=0 slot2(own)=8004 slot3(oth)=0

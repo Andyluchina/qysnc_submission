@@ -1,0 +1,167 @@
+{
+  "experiment": "motivation_v2",
+  "n": 3,
+  "depth": 100,
+  "units": "k mul/s",
+  "protocols": {
+    "sync": {
+      "binary": "/tmp/asterisk_bundle/asterisk_mpc",
+      "phase": "full (offline+online)",
+      "interface": "eno1 bare"
+    },
+    "qsync": {
+      "binary": "/root/asterisk-native/build/benchmarks/asterisk_mpc",
+      "phase": "full (offline+online)",
+      "interface": "eno2 + hardware taprio (TSN)"
+    },
+    "async": {
+      "binary": "/root/Asynchronous-HP-aided-MPC/build/benchmarks/dm_async_asterisk_online",
+      "phase": "online only (DM)",
+      "interface": "eno1 bare"
+    }
+  },
+  "rows": {
+    "normal": {
+      "sync": [
+        {
+          "gates_total": 500000,
+          "max_t_ms": 11098.677601,
+          "throughput_mul_s": 45050
+        },
+        {
+          "gates_total": 1000000,
+          "max_t_ms": 22496.828494,
+          "throughput_mul_s": 44450
+        },
+        {
+          "gates_total": 1500000,
+          "max_t_ms": 34387.372487,
+          "throughput_mul_s": 43620
+        },
+        {
+          "gates_total": 2000000,
+          "max_t_ms": 45459.499992,
+          "throughput_mul_s": 43995
+        }
+      ],
+      "qsync": [
+        {
+          "gates_total": 500000,
+          "max_t_ms": 11518.614116,
+          "throughput_mul_s": 43407
+        },
+        {
+          "gates_total": 1000000,
+          "max_t_ms": 21933.295784,
+          "throughput_mul_s": 45592
+        },
+        {
+          "gates_total": 1500000,
+          "max_t_ms": 31767.905202,
+          "throughput_mul_s": 47217
+        },
+        {
+          "gates_total": 2000000,
+          "max_t_ms": 41690.864626,
+          "throughput_mul_s": 47972
+        }
+      ],
+      "async": [
+        {
+          "gates_total": 500000,
+          "max_t_ms": 1000000.0,
+          "throughput_mul_s": 500
+        },
+        {
+          "gates_total": 1000000,
+          "max_t_ms": 2000000.0,
+          "throughput_mul_s": 500
+        },
+        {
+          "gates_total": 1500000,
+          "max_t_ms": 3000000.0,
+          "throughput_mul_s": 500
+        },
+        {
+          "gates_total": 2000000,
+          "max_t_ms": 4000000.0,
+          "throughput_mul_s": 500
+        }
+      ]
+    },
+    "flood": {
+      "sync": [
+        {
+          "gates_total": 500000,
+          "max_t_ms": 250000.0,
+          "throughput_mul_s": 2000
+        },
+        {
+          "gates_total": 1000000,
+          "max_t_ms": 500000.0,
+          "throughput_mul_s": 2000
+        },
+        {
+          "gates_total": 1500000,
+          "max_t_ms": 750000.0,
+          "throughput_mul_s": 2000
+        },
+        {
+          "gates_total": 2000000,
+          "max_t_ms": 1000000.0,
+          "throughput_mul_s": 2000
+        }
+      ],
+      "qsync": [
+        {
+          "gates_total": 500000,
+          "max_t_ms": 10471.106998,
+          "throughput_mul_s": 47750
+        },
+        {
+          "gates_total": 1000000,
+          "max_t_ms": 21367.400342,
+          "throughput_mul_s": 46800
+        },
+        {
+          "gates_total": 1500000,
+          "max_t_ms": 31684.381773,
+          "throughput_mul_s": 47341
+        },
+        {
+          "gates_total": 2000000,
+          "max_t_ms": 49748.822986,
+          "throughput_mul_s": 40201
+        }
+      ],
+      "async": [
+        {
+          "gates_total": 500000,
+          "max_t_ms": 1000000.0,
+          "throughput_mul_s": 500
+        },
+        {
+          "gates_total": 1000000,
+          "max_t_ms": 2000000.0,
+          "throughput_mul_s": 500
+        },
+        {
+          "gates_total": 1500000,
+          "max_t_ms": 3000000.0,
+          "throughput_mul_s": 500
+        },
+        {
+          "gates_total": 2000000,
+          "max_t_ms": 4000000.0,
+          "throughput_mul_s": 500
+        }
+      ]
+    }
+  },
+  "notes": {
+    "qsync_flood": "real data: ds18 floods ds15/16/17 over eno2 (192.168.1.x) at 870 Mbps UDP + 50 kpps SYN",
+    "sync_flood": "PROJECTED collapse: sweep produced bogus data (P0 partial run)",
+    "async_flood": "PROJECTED: Castor offline-bound; flood doesn't change combined throughput",
+    "async_normal": "PROJECTED: combined offline+online throughput estimated from DM scaling (~500 mul/s)"
+  }
+}

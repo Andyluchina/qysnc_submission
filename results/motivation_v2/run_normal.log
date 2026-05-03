@@ -1,0 +1,4 @@
+=== total_gates=500000 G=5000 D=100 n=3 row=normal ===
+  -- sync --
+    sync max=2444.622079ms thr=204530
+  -- qsync --

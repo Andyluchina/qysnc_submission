@@ -1,0 +1,36 @@
+--- Details ---
+depth: 100
+gates_per_level: 5000
+num-parties: 3
+pid: 2
+repeat: 1
+security_param: 128
+seed: 200
+threads: 6
+
+--- Circuit ---
+Input: 5000
+Addition: 0
+Multiplication: 500000
+Multiplication with Fan-in 3: 0
+Multiplication with Fan-in 4: 0
+Subtraction: 0
+Addition with constant: 0
+Multiplication with constant: 0
+ReLU: 0
+MSB: 0
+Equals to zero: 0
+Less than zero: 0
+Dotproduct: 0
+Dotproduct with truncation: 0
+Invalid: 0
+Total: 505000
+Depth: 101
+
+TS pid=2 wall=1777429922807 pre_sync
+TS pid=2 wall=1777429923059 post_sync
+TS pid=2 wall=1777429924336 post_offline
+TS pid=2 wall=1777429924374 post_setrandom
+TS pid=2 wall=1777429924374 online_layer=0
+TS pid=2 wall=1777429942446 online_layer=1
+net_recv_data

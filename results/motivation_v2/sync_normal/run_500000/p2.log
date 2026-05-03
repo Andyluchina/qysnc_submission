@@ -1,0 +1,55 @@
+--- Details ---
+depth: 100
+gates_per_level: 5000
+num-parties: 3
+pid: 2
+repeat: 1
+security_param: 128
+seed: 200
+threads: 6
+
+--- Circuit ---
+Input: 5000
+Addition: 0
+Multiplication: 500000
+Multiplication with Fan-in 3: 0
+Multiplication with Fan-in 4: 0
+Subtraction: 0
+Addition with constant: 0
+Multiplication with constant: 0
+ReLU: 0
+MSB: 0
+Equals to zero: 0
+Less than zero: 0
+Dotproduct: 0
+Dotproduct with truncation: 0
+Invalid: 0
+Total: 505000
+Depth: 101
+
+TS pid=2 wall=1777428272440 pre_sync
+TS pid=2 wall=1777428272460 post_sync
+TS pid=2 wall=1777428273750 post_offline
+TS pid=2 wall=1777428273779 post_setrandom
+TS pid=2 wall=1777428273779 online_layer=0
+TS pid=2 wall=1777428281216 online_layer=1
+TS pid=2 wall=1777428281310 online_layer=5
+TS pid=2 wall=1777428281779 online_layer=25
+TS pid=2 wall=1777428282372 online_layer=50
+TS pid=2 wall=1777428282964 online_layer=75
+TS pid=2 wall=1777428283535 online_layer=99
+--- Repetition 1 ---
+time: 11098.677601 ms
+sent: 5332800 bytes
+
+--- Statistics ---
+peak_resident_set_size: 551644
+peak_virtual_memory: 1121020
+
+NetIOMP: pid=2 peer=0 ios  ns_send=0 ns_recv=0
+NetIOMP: pid=2 peer=0 ios2 ns_send=0 ns_recv=0
+NetIOMP: pid=2 peer=1 ios  ns_send=0 ns_recv=6343064
+NetIOMP: pid=2 peer=1 ios2 ns_send=203578 ns_recv=0
+NetIOMP: pid=2 peer=3 ios  ns_send=158054 ns_recv=0
+NetIOMP: pid=2 peer=3 ios2 ns_send=0 ns_recv=7612411687
+NetIOMP: pid=2 TOTAL ns_send=361632 ns_recv=7618754751

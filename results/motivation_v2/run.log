@@ -1,0 +1,10 @@
+=== total_gates=500000 G=10000 D=50 n=3 row=normal ===
+  -- sync --
+/root/e1_sweep/run_motivation_v2.sh: line 20: 1562078 Killed                  ssh -o ConnectTimeout=3 -o BatchMode=yes "$h" "pkill -9 -f asterisk_online 2>/dev/null; pkill -9 -f hm_async_asterisk_online 2>/dev/null; pkill -9 timesrcd 2>/dev/null; rm -f /dev/shm/timesrc; true" 2> /dev/null
+/root/e1_sweep/run_motivation_v2.sh: line 20: 1562079 Killed                  ssh -o ConnectTimeout=3 -o BatchMode=yes "$h" "pkill -9 -f asterisk_online 2>/dev/null; pkill -9 -f hm_async_asterisk_online 2>/dev/null; pkill -9 timesrcd 2>/dev/null; rm -f /dev/shm/timesrc; true" 2> /dev/null
+/root/e1_sweep/run_motivation_v2.sh: line 20: 1562080 Killed                  ssh -o ConnectTimeout=3 -o BatchMode=yes "$h" "pkill -9 -f asterisk_online 2>/dev/null; pkill -9 -f hm_async_asterisk_online 2>/dev/null; pkill -9 timesrcd 2>/dev/null; rm -f /dev/shm/timesrc; true" 2> /dev/null
+    sync max=2407.538162ms thr=207681
+  -- qsync --
+/root/e1_sweep/run_motivation_v2.sh: line 20: 1562296 Killed                  ssh -o ConnectTimeout=3 -o BatchMode=yes "$h" "pkill -9 -f asterisk_online 2>/dev/null; pkill -9 -f hm_async_asterisk_online 2>/dev/null; pkill -9 timesrcd 2>/dev/null; rm -f /dev/shm/timesrc; true" 2> /dev/null
+/root/e1_sweep/run_motivation_v2.sh: line 20: 1562297 Killed                  ssh -o ConnectTimeout=3 -o BatchMode=yes "$h" "pkill -9 -f asterisk_online 2>/dev/null; pkill -9 -f hm_async_asterisk_online 2>/dev/null; pkill -9 timesrcd 2>/dev/null; rm -f /dev/shm/timesrc; true" 2> /dev/null
+/root/e1_sweep/run_motivation_v2.sh: line 20: 1562298 Killed                  ssh -o ConnectTimeout=3 -o BatchMode=yes "$h" "pkill -9 -f asterisk_online 2>/dev/null; pkill -9 -f hm_async_asterisk_online 2>/dev/null; pkill -9 timesrcd 2>/dev/null; rm -f /dev/shm/timesrc; true" 2> /dev/null

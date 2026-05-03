@@ -1,0 +1,59 @@
+--- Details ---
+depth: 100
+gates_per_level: 10000
+num-parties: 4
+pid: 3
+repeat: 1
+security_param: 128
+seed: 200
+threads: 6
+
+--- Circuit ---
+Input: 10000
+Addition: 0
+Multiplication: 1000000
+Multiplication with Fan-in 3: 0
+Multiplication with Fan-in 4: 0
+Subtraction: 0
+Addition with constant: 0
+Multiplication with constant: 0
+ReLU: 0
+MSB: 0
+Equals to zero: 0
+Less than zero: 0
+Dotproduct: 0
+Dotproduct with truncation: 0
+Invalid: 0
+Total: 1010000
+Depth: 101
+
+TS pid=3 wall=1777449269860 pre_sync
+TS pid=3 wall=1777449270857 post_sync
+TIMER pid=3 off_eval.run()=2127.11 ms
+TS pid=3 wall=1777449272984 post_offline
+TS pid=3 wall=1777449273068 post_setrandom
+TS pid=3 wall=1777449273068 online_layer=0
+TS pid=3 wall=1777449289763 online_layer=1
+TS pid=3 wall=1777449290112 online_layer=5
+TS pid=3 wall=1777449291686 online_layer=25
+TS pid=3 wall=1777449293652 online_layer=50
+TS pid=3 wall=1777449295619 online_layer=75
+TS pid=3 wall=1777449297507 online_layer=99
+TIMER pid=3 online_loop=24516.13 ms
+--- Repetition 1 ---
+time: 26727.843284 ms
+sent: 12000000 bytes
+
+--- Statistics ---
+peak_resident_set_size: 1095164
+peak_virtual_memory: 1808376
+
+BcastBus[p=3]: drop_self=9006 witness_disp=35272 drop_unkn=0 tnacks=0 wnacks=0 nack_origin_drop=0 nack_recv=0
+  tx[0]: app_bytes=0 tx_dg=0 retx=0 evict=0 poisoned=0
+  tx[1]: app_bytes=4000000 tx_dg=3002 retx=0 evict=0 poisoned=0
+  tx[2]: app_bytes=4000000 tx_dg=3002 retx=0 evict=0 poisoned=0
+  tx[4]: app_bytes=4000000 tx_dg=3002 retx=0 evict=0 poisoned=0
+  rx[0]: rx_dg=0 poisoned=0
+  rx[1]: rx_dg=3002 poisoned=0
+  rx[2]: rx_dg=3002 poisoned=0
+  rx[4]: rx_dg=3002 poisoned=0

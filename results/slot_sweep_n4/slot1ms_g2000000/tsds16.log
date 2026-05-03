@@ -1,0 +1,2 @@
+timesrcd: ptp source /dev/ptp1 opened; first read ns=1609914210908556944
+timesrcd: backend=ptp period=100ms

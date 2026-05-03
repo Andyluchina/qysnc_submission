@@ -1,0 +1,30 @@
+=== Native distributed Asterisk MPC — TSN (eno2) ===
+n=3 g=10000 d=100 repeat=1 slot_ns=1048544
+active hosts: P0=local, P1=ds15 P2=ds16 P3=ds17 
+preflight: taprio aligned on all hosts (cycle=4194176, base_time mod cycle=0)
+--- starting timesrcd (backend=ptp ptp_dev=/dev/ptp1) ---
+--- launching MPC parties ---
+
+=== Per-party results ===
+--- Party 0 (local) ---
+pid: 0
+time: 13338.349868 ms
+sent: 24160064 bytes
+--- Party 1 (ds15) ---
+pid: 1
+time: 21933.295784 ms
+sent: 10666400 bytes
+--- Party 2 (ds16) ---
+pid: 2
+time: 21932.471379 ms
+sent: 10666400 bytes
+--- Party 3 (ds17) ---
+pid: 3
+time: 21929.758848 ms
+sent: 10667200 bytes
+
+=== Retransmit + scheduler audit ===
+P0: retx=0   poison=0   in_slot=17334  out_of_slot=198 boundary_spans=197
+P1: retx=0   poison=0   in_slot=7999   out_of_slot=5   boundary_spans=5  
+P2: retx=0   poison=0   in_slot=7998   out_of_slot=6   boundary_spans=6  
+P3: retx=0   poison=0   in_slot=8274   out_of_slot=2   boundary_spans=2  

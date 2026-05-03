@@ -1,0 +1,44 @@
+--- Details ---
+buy_list_size: 32
+num-parties: 3
+pid: 1
+repeat: 1
+security_param: 128
+seed: 200
+sell_list_size: 32
+threads: 1
+
+--- Circuit ---
+Input: 3
+Addition: 225
+Multiplication: 388
+Multiplication with Fan-in 3: 0
+Multiplication with Fan-in 4: 0
+Subtraction: 99
+Addition with constant: 322
+Multiplication with constant: 76
+ReLU: 0
+MSB: 0
+Equals to zero: 1
+Less than zero: 97
+Dotproduct: 0
+Dotproduct with truncation: 0
+Invalid: 0
+Total: 1211
+Depth: 7
+
+--- Repetition 1 ---
+time: 323.861378 ms
+sent: 9861 bytes
+
+--- Statistics ---
+peak_resident_set_size: 38240
+peak_virtual_memory: 194136
+
+NetIOMP: pid=1 peer=0 ios  ns_send=0 ns_recv=0
+NetIOMP: pid=1 peer=0 ios2 ns_send=0 ns_recv=0
+NetIOMP: pid=1 peer=2 ios  ns_send=10723 ns_recv=0
+NetIOMP: pid=1 peer=2 ios2 ns_send=0 ns_recv=1443274
+NetIOMP: pid=1 peer=3 ios  ns_send=5107 ns_recv=0
+NetIOMP: pid=1 peer=3 ios2 ns_send=0 ns_recv=240249334
+NetIOMP: pid=1 TOTAL ns_send=15830 ns_recv=241692608
