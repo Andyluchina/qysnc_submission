@@ -1,0 +1,2 @@
+/usr/bin/ar qc libAsteriskTime.a CMakeFiles/AsteriskTime.dir/time_client.cpp.o
+/usr/bin/ranlib libAsteriskTime.a

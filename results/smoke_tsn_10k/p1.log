@@ -1,0 +1,55 @@
+--- Details ---
+depth: 10
+gates_per_level: 1000
+num-parties: 3
+pid: 1
+repeat: 1
+security_param: 128
+seed: 200
+threads: 6
+
+--- Circuit ---
+Input: 1000
+Addition: 0
+Multiplication: 10000
+Multiplication with Fan-in 3: 0
+Multiplication with Fan-in 4: 0
+Subtraction: 0
+Addition with constant: 0
+Multiplication with constant: 0
+ReLU: 0
+MSB: 0
+Equals to zero: 0
+Less than zero: 0
+Dotproduct: 0
+Dotproduct with truncation: 0
+Invalid: 0
+Total: 11000
+Depth: 11
+
+TS pid=1 wall=1777587363708 pre_sync
+TS pid=1 wall=1777587365007 post_sync
+TIMER pid=1 off_eval.run()=86.80 ms
+TS pid=1 wall=1777587365094 post_offline
+TS pid=1 wall=1777587365100 post_setrandom
+TS pid=1 wall=1777587365100 online_layer=0
+TS pid=1 wall=1777587365706 online_layer=1
+TS pid=1 wall=1777587365782 online_layer=5
+TIMER pid=1 online_loop=786.92 ms
+--- Repetition 1 ---
+time: 879.179385 ms
+sent: 106640 bytes
+
+--- Statistics ---
+peak_resident_set_size: 20944
+peak_virtual_memory: 659384
+
+BcastBus[p=1]: drop_self=84 witness_disp=270 drop_unkn=0 tnacks=0 wnacks=0 nack_origin_drop=0 nack_recv=5
+  tx[0]: app_bytes=0 tx_dg=0 retx=0 evict=0 poisoned=0
+  tx[2]: app_bytes=53280 tx_dg=42 retx=0 evict=0 poisoned=0
+  tx[3]: app_bytes=53360 tx_dg=42 retx=0 evict=0 poisoned=0
+  rx[0]: rx_dg=0 poisoned=0
+  rx[2]: rx_dg=42 poisoned=0
+  rx[3]: rx_dg=42 poisoned=0
+TDMAScheduler[p=1]: slot_ns=1048544 cycle_slots=4 waits=19 ns_waited=35557417 sends={in=84 out=0 boundary_spans=0}
+TDMAScheduler[p=1]: per-slot send counts: slot0(oth)=0 slot1(own)=84 slot2(oth)=0 slot3(oth)=0
