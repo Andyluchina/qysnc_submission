@@ -1,12 +1,9 @@
 # qsync — Artifact Evaluation
 
-Artifact-evaluation view of the qsync evaluation: the latest MPC source
-under test, plus the scripts used to configure the network, run the
-sweeps (hardware TSN and software TDMA), drive the fault-tolerance
-experiments, and produce the figures in the paper.
+Artifact-evaluation view of the qsync evaluation: the latest MPC source.
 
-Files here are symlinked from the canonical working directories;
-editing the targets updates the originals.
+Accountability & Reliable Broadcast
+The accountability layer lives entirely in the broadcast bus (code/src/io/bcast_bus.h, code/src/io/bcast_bus.cpp)
 
 ## Layout
 
