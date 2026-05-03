@@ -22,7 +22,7 @@ NET_CONFIG=/tmp/asterisk_bundle/net_config_n3_tsn.json
 mkdir -p "$OUT"
 
 N=3
-HOSTS=("" "ds15" "ds16" "ds17")
+HOSTS=("" "server1" "server2" "server3")
 THREADS=${THREADS:-6}
 THREADS_P0=${THREADS_P0:-$THREADS}
 
@@ -65,7 +65,7 @@ ssh_retry_bg() {
 
 cleanup_all() {
   pkill -9 -x $APP 2>/dev/null; pkill -9 timesrcd 2>/dev/null; rm -f /dev/shm/timesrc; true
-  for h in ds15 ds16 ds17; do
+  for h in server1 server2 server3; do
     ssh -o BatchMode=yes -o ConnectTimeout=3 "$h" "pkill -9 -x $APP 2>/dev/null; pkill -9 timesrcd 2>/dev/null; rm -f /dev/shm/timesrc; true" &
   done
   wait

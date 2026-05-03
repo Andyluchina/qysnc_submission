@@ -19,9 +19,10 @@ qsync-ae/
 │   │   └── utils/              Circuit, share types, helpers
 │   └── benchmark/              Application benchmarks (darkpool, etc.)
 ├── scripts/
-│   ├── taprio/                 Hardware TSN (taprio) GCL configuration
-│   ├── sweeps_tsn/             Sweeps over hardware TSN
-│   ├── sweeps_software_tdma/   Sweeps over software TDMA
+│   ├── taprio/                 Host-side taprio (Linux qdisc) install
+│   ├── tsn_switch/             Switch-side Qbv + port→TC classifier config
+│   ├── sweeps_tsn/             Sweeps over hardware TSN (switch-enforced)
+│   ├── sweeps_software_tdma/   Sweeps over software TDMA (taprio + scheduler)
 │   ├── fault_tolerance/        Crash, blacklist, and flood experiments
 │   ├── plotting/               Aggregation + figure scripts
 │   └── net_configs/            Per-N host-list JSONs
@@ -67,16 +68,29 @@ To run on a cluster, point each host at a `net_config` JSON from
 
 ## Network setup
 
-Two transport modes are supported:
+Both modes share the same software stack: PTP-synced clocks, the Linux
+`taprio` qdisc on the outbound NIC, and the application-level
+`TDMAScheduler` (`src/net/tdma_scheduler.h`) that gates every datagram
+before it hits the socket. They differ only in where the schedule is
+*enforced*:
 
-- **Software TDMA** — the included `TDMAScheduler` paces every send to
-  the party's slot. Requires a shared time source (PTP).
-- **Hardware TSN** — Linux `taprio` qdisc enforces the slot schedule
-  in the NIC. Install with `scripts/taprio/install_taprio_ds15pat.sh`
-  on each TSN host.
+- **Software TDMA** — runs over a regular L2 switch on `eno1`. taprio
+  is installed by `scripts/taprio/install_taprio_pat.sh`. Slot
+  discipline is host-side only; nothing in the network drops
+  out-of-slot packets.
+- **Hardware TSN** — runs over a TSN-capable switch on `eno2`. taprio
+  is installed on each host by `scripts/taprio/setup_eno2_aligned.sh`,
+  with its `base-time` aligned to the switch's Qbv reference. The
+  switch's own gate-control list, ingress port→TC classifier, and
+  Byzantine-port containment are configured by
+  `scripts/tsn_switch/switch_qbv_tdma.cfg` (paste into the switch CLI
+  in `system-view`); the switch enforces the schedule by dropping
+  anything that arrives outside the owner's slot, so hosts must stay
+  in their slot.
 
-UDP ports 10000–10100 must be open on every host; firewall rules for
-TCP do not cover UDP.
+Both require a shared time source: `timesrcd` runs on every host and
+reads the eno1 or eno2 PHC respectively. UDP ports 10000–10100 must be
+open on every host; firewall rules for TCP do not cover UDP.
 
 ## Output
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 # QSync-only FLOOD sweep over eno2 TSN.
-# Sources: ds18 (192.168.1.14), ds13 (192.168.1.100). Each blasts UDP+SYN at all 3 targets.
+# Two flood sources blast UDP+SYN at all 3 MPC targets.
 set -u
 N=3
 D=100
@@ -10,9 +10,9 @@ PER_RUN_TIMEOUT=${PER_RUN_TIMEOUT:-300}
 LOCAL=/root/asterisk-native
 REMOTE=/tmp/asterisk-native
 NET=/tmp/asterisk_bundle/net_config_n3_tsn.json
-HOSTS=(ds15 ds16 ds17)
+HOSTS=(server1 server2 server3)
 TSN_TARGETS=(192.168.1.11 192.168.1.12 192.168.1.13)
-FLOOD_SRC=(ds18)
+FLOOD_SRC=(server4)
 FLOOD_PORT=10000
 FLOOD_PPS=80000
 FLOOD_PKT_SIZE=1400

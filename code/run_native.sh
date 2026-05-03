@@ -11,7 +11,7 @@ REPEAT=${3:-1}
 N=${4:-6}                     # default n=6 → all 7 hosts; pass 3..6 to vary
 
 # All seven hosts in order P0..P6. Index 0 is local (empty string).
-HOSTS=("" "ds15" "ds16" "ds17" "ds18" "ds13" "ds11")
+HOSTS=("" "server1" "server2" "server3" "server4" "server5" "server6")
 
 # Time source. Default 'fake' (CLOCK_REALTIME) since neither sync-TCP nor
 # the no-TDMA UDP path needs sub-ms time. Set TIMESRC_BACKEND=ptp to use

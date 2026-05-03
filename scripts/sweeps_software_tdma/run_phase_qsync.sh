@@ -9,7 +9,7 @@ RES=$LOCAL/results
 BIN=${BIN:-asterisk_offline}
 G=${1:-500}; D=${2:-50}; REPEAT=${3:-1}; N=${4:-3}
 THREADS=${THREADS:-6}
-HOSTS=("" "ds15" "ds16" "ds17" "ds18" "ds13" "ds11")
+HOSTS=("" "server1" "server2" "server3" "server4" "server5" "server6")
 
 ACTIVE=()
 for ((p=1; p<=N; p++)); do ACTIVE+=("${HOSTS[$p]}"); done

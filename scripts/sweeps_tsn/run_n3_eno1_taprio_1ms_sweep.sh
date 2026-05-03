@@ -16,7 +16,7 @@ QSYNC_LOCAL_ROOT=/root/asterisk-native_root
 
 cleanup() {
   pkill -9 -f 'asterisk_mpc' 2>/dev/null || true
-  for h in ds15 ds16 ds17; do
+  for h in server1 server2 server3; do
     ssh -o BatchMode=yes -o ConnectTimeout=3 "$h" "pkill -9 -f asterisk_mpc 2>/dev/null; pkill -9 timesrcd 2>/dev/null; rm -f /dev/shm/timesrc; true" 2>/dev/null &
   done
   wait 2>/dev/null

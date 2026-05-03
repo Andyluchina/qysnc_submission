@@ -5,7 +5,7 @@
 # all after T_observe.
 set -u
 N=3
-HOSTS=("ds26" "ds16" "ds17" "ds18")
+HOSTS=("coord" "server2" "server3" "server4")
 TOTAL=${#HOSTS[@]}
 G=10000; D=100; PER=180       # 1M gates → online ~40s, dealer ~10-15s
 T_FAULT=20     # crash mid-online (after offline + dealer done)
@@ -32,7 +32,7 @@ cleanup() {
 }
 
 cleanup
-echo "[$(date -Is)] === Phase F crash smoke (n=$N, victim=p3 ds18) ==="
+echo "[$(date -Is)] === Phase F crash smoke (n=$N, victim=p3 server4) ==="
 
 $LOCAL/build/timesrcd/timesrcd --unlink --backend=ptp --ptp-dev=/dev/ptp1 > $RDIR/ts.log 2>&1 &
 LP=$!
@@ -47,14 +47,14 @@ ENVS_BASE="TDMA_DISABLED= TDMA_SLOT_NS=1048544 MPC_SO_PRIORITY=4 MPC_PAIR_KEY_SE
 
 # Use the small G; protocol enters online phase quickly so crash hits there.
 G_BIG=$G
-ssh -o ConnectTimeout=4 -o BatchMode=yes ds18 \
+ssh -o ConnectTimeout=4 -o BatchMode=yes server4 \
   "$ENVS_BASE LD_LIBRARY_PATH=$REMOTE/lib timeout $PER $REMOTE/build/benchmarks/asterisk_mpc -p 3 --net-config $NETCONF -g $G_BIG -d $D -n $N -r 1 -t 6" \
   > $RDIR/p3.log 2>&1 &
-ssh -o ConnectTimeout=4 -o BatchMode=yes ds17 \
+ssh -o ConnectTimeout=4 -o BatchMode=yes server3 \
   "$ENVS_BASE LD_LIBRARY_PATH=$REMOTE/lib timeout $PER $REMOTE/build/benchmarks/asterisk_mpc -p 2 --net-config $NETCONF -g $G_BIG -d $D -n $N -r 1 -t 6" \
   > $RDIR/p2.log 2>&1 &
 sleep 0.2
-ssh -o ConnectTimeout=4 -o BatchMode=yes ds16 \
+ssh -o ConnectTimeout=4 -o BatchMode=yes server2 \
   "$ENVS_BASE LD_LIBRARY_PATH=$REMOTE/lib timeout $PER $REMOTE/build/benchmarks/asterisk_mpc -p 1 --net-config $NETCONF -g $G_BIG -d $D -n $N -r 1 -t 6" \
   > $RDIR/p1.log 2>&1 &
 sleep 0.5
@@ -65,12 +65,12 @@ P0_PID=$!
 
 # Wait T_FAULT seconds, then crash p3
 sleep $T_FAULT
-echo "[$(date -Is)] === CRASH inject: kill -9 asterisk_mpc on ds18 ==="
+echo "[$(date -Is)] === CRASH inject: kill -9 asterisk_mpc on server4 ==="
 # Capture TAI from PTP-synced timesrc shm BEFORE issuing the kill.
 crash_tai_ns=$($LOCAL/build/timesrcd/timesrc_probe --samples=1 2>/dev/null \
   | grep "tag=probe idx=0" | awk -F't_shared_ns=' '{print $2}' \
   | awk '{print $1}')
-ssh -o ConnectTimeout=3 -o BatchMode=yes ds18 \
+ssh -o ConnectTimeout=3 -o BatchMode=yes server4 \
   "ps aux | grep asterisk_mpc | grep -v grep | awk '{print \$2}' | xargs -r sudo kill -9"
 echo "  crash_tai_ns=$crash_tai_ns"
 

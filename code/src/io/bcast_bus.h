@@ -26,9 +26,9 @@ class ChannelPoisonedError : public std::runtime_error {
       : std::runtime_error(msg) {}
 };
 
-// One broadcast bus per host. One UDP socket bound to (192.168.1.X,
-// port). One pump thread. Per-(target) send state, per-(sender) recv
-// state. Always TDMA-aligned, always broadcast, always per-pair AES.
+// One broadcast bus per host. One UDP socket. One pump thread.
+// Per-(target) send state, per-(sender) recv state. Always
+// TDMA-aligned, always broadcast, always per-pair AES.
 class BcastBus {
  public:
   static constexpr size_t MAX_PAYLOAD = 1400;

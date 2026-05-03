@@ -4,7 +4,7 @@
 # Host taprio: 4.194 ms cycle on each MPC host.
 #
 # Workload axis: g ∈ {5000, 10000, 15000, 20000}, d=100 → 0.5M..2M gates
-# Condition axis: no-flood, under-flood (ds18 → P0 line-rate)
+# Condition axis: no-flood, under-flood (server4 → P0 line-rate)
 # Reps: 3 per cell.
 set -u
 
@@ -33,16 +33,16 @@ while True:
 }
 
 start_flood() {
-  ssh -o BatchMode=yes -f ds18 "nohup python3 /tmp/flood_one.py 192.168.1.10 180 16 > /tmp/sweep_flood.out 2>&1 < /dev/null"
+  ssh -o BatchMode=yes -f server4 "nohup python3 /tmp/flood_one.py 192.168.1.10 180 16 > /tmp/sweep_flood.out 2>&1 < /dev/null"
 }
 
 stop_flood() {
-  ssh -o BatchMode=yes ds18 "pkill -9 -f flood_one 2>/dev/null; true" 2>/dev/null
+  ssh -o BatchMode=yes server4 "pkill -9 -f flood_one 2>/dev/null; true" 2>/dev/null
 }
 
 cleanup_mpc() {
   pkill -9 -x asterisk_mpc 2>/dev/null
-  for h in ds15 ds16 ds17; do
+  for h in server1 server2 server3; do
     ssh -o BatchMode=yes -o ConnectTimeout=3 "$h" "pkill -9 -x asterisk_mpc 2>/dev/null; pkill -9 timesrcd 2>/dev/null; rm -f /dev/shm/timesrc; true" &
   done
   wait || true; sleep 1

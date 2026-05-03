@@ -3,7 +3,7 @@
 #   apps:        Darkpool_CDA, Darkpool_VM
 #   protocols:   sync TCP (eno1), qsync UDP+TDMA (eno2 + switch Qbv)
 #   sizes (B=S): 16, 64, 256, 512, 1024
-#   n=3 (TSN island has 4 hosts: P0 local + ds15/16/17)
+#   n=3 (TSN island has 4 hosts: P0 local + server1/16/17)
 #   reps=5 (outer loop, so partial completion still gives full coverage)
 # 100 runs total.
 set -u
@@ -24,7 +24,7 @@ cleanup() {
     pkill -9 -x "$app" 2>/dev/null
   done
   pkill -9 timesrcd 2>/dev/null
-  for h in ds15 ds16 ds17; do
+  for h in server1 server2 server3; do
     ssh -o BatchMode=yes -o ConnectTimeout=3 "$h" "pkill -9 -x Darkpool_CDA; pkill -9 -x Darkpool_VM; pkill -9 timesrcd; rm -f /dev/shm/timesrc; true" 2>/dev/null &
   done
   wait || true

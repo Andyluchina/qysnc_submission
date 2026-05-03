@@ -7,7 +7,7 @@ set -u
 
 SLOT_NS=1048544
 TOTAL=4
-ALL=("ds26" "ds15" "ds16" "ds17")
+ALL=("coord" "server1" "server2" "server3")
 BASE=1609731273000000000
 
 for pid in 0 1 2 3; do
@@ -18,14 +18,14 @@ for pid in 0 1 2 3; do
     else entries+=" sched-entry S 0x1 ${SLOT_NS}"; fi
   done
   cmd="sudo tc qdisc replace dev eno2 parent root handle 100 taprio num_tc 2 map 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 queues 1@0 1@1 base-time $BASE $entries clockid CLOCK_TAI flags 0x0"
-  if [ "$h" = "ds26" ]; then bash -c "$cmd"
+  if [ "$h" = "coord" ]; then bash -c "$cmd"
   else ssh -o ConnectTimeout=4 -o BatchMode=yes "$h" "$cmd"; fi
 done
 
 echo
 echo "=== verify base-time / cycle / per-host gate scheme ==="
 for h in "${ALL[@]}"; do
-  if [ "$h" = "ds26" ]; then sched=$(tc qdisc show dev eno2)
+  if [ "$h" = "coord" ]; then sched=$(tc qdisc show dev eno2)
   else sched=$(ssh -o ConnectTimeout=3 -o BatchMode=yes "$h" "tc qdisc show dev eno2"); fi
   base=$(echo "$sched" | grep -oE "base-time [0-9]+" | head -1)
   cycle=$(echo "$sched" | grep -oE "cycle-time [0-9]+" | head -1)
@@ -35,7 +35,7 @@ done
 
 echo
 echo "=== SSH probe (must still work) ==="
-for h in ds15 ds16 ds17; do
+for h in server1 server2 server3; do
   out=$(timeout 5 ssh -o ConnectTimeout=4 -o BatchMode=yes "$h" "echo SSH_OK" 2>&1)
   echo "  $h: $out"
 done

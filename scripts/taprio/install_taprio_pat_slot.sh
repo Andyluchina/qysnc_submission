@@ -1,7 +1,7 @@
 #!/bin/bash
-# ds15-pattern taprio with parameterized slot width.
+# owner-slot pattern taprio with parameterized slot width.
 # Slot = PER_OWNER × ENTRY_NS (default 4×262136 ≈ 1.048 ms).
-# Usage: install_taprio_ds15pat_slot.sh <pid> <total_hosts> <slot_ns>
+# Usage: install_taprio_pat_slot.sh <pid> <total_hosts> <slot_ns>
 set -euo pipefail
 PID=$1
 TOTAL=$2

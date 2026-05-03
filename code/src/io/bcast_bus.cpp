@@ -107,10 +107,10 @@ BcastBus::BcastBus(int self_id, int nP, int port,
   bcast_addr_.sin_port = htons(static_cast<uint16_t>(port));
   // Broadcast destination is selected by two env vars (in precedence order):
   //   1. MPC_BROADCAST_IP=<dotted-IPv4>  — explicit override (highest priority)
-  //   2. MPC_NETWORK={tsn|eno1}          — semantic toggle:
-  //        "tsn"  → 192.168.1.255  (TSN fabric on eno2)
-  //        "eno1" → 255.255.255.255 (campus best-effort on eno1)
-  //   3. unset → 255.255.255.255 (default = eno1).
+  //   2. MPC_NETWORK={tsn|eno1}          — semantic toggle: selects the
+  //                                        appropriate broadcast address
+  //                                        for the chosen interface.
+  //   3. unset → default to the eno1 broadcast.
   const char* bcast_ip = std::getenv("MPC_BROADCAST_IP");
   if (!bcast_ip || !*bcast_ip) {
     const char* net = std::getenv("MPC_NETWORK");

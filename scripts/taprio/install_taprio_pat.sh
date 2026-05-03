@@ -1,8 +1,8 @@
 #!/bin/bash
-# Install ds15-pattern taprio on a host's eno1.
+# Install owner-slot pattern taprio on a host's eno1.
 #   map: 0 1 1 1 1 ... → priority 0 → tc0, prio 1..15 → tc1
 #   gatemask 0x1 (tc0) on owner slot (4× 262136 ns), 0x2 (tc1) on others.
-# Usage: install_taprio_ds15pat.sh <pid> <total_hosts>
+# Usage: install_taprio_pat.sh <pid> <total_hosts>
 set -euo pipefail
 PID=$1
 TOTAL=$2

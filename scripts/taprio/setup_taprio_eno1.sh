@@ -23,7 +23,7 @@ IF=eno1
 
 if [ "$CMD" = "remove" ]; then
   # Don't actually del — replace with mq so we never leave the interface
-  # without a qdisc. (Pure `del root` left ds26 unreachable in the past.)
+  # without a qdisc. (Pure `del root` left coord unreachable in the past.)
   sudo tc qdisc replace dev $IF root mq 2>/dev/null || true
   echo "taprio replaced with mq on $IF"
   exit 0

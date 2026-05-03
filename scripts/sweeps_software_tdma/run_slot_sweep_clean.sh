@@ -12,7 +12,7 @@ GATES_LIST=(1000000 1500000 2000000)
 SLOT_MS_LIST=(1 2 5 10)
 ENTRY_NS=262136
 TOTAL_HOSTS=$((N+1))   # 6
-ALL_HOSTS=("ds26" "ds15" "ds16" "ds17" "ds18" "ds13")
+ALL_HOSTS=("coord" "server1" "server2" "server3" "server4" "server5")
 
 LOCAL=/root/asterisk-native_root
 REMOTE=/tmp/asterisk-native_root
@@ -54,7 +54,7 @@ install_taprio() {
       fi
     done
     local cmd="sudo tc qdisc replace dev eno1 parent root handle 100 taprio num_tc 2 map 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 queues 1@0 1@1 base-time 1609731273000000000 $entries clockid CLOCK_TAI flags 0x0"
-    if [ "$h" = "ds26" ]; then bash -c "$cmd"; else ssh -o ConnectTimeout=4 -o BatchMode=yes "$h" "$cmd"; fi
+    if [ "$h" = "coord" ]; then bash -c "$cmd"; else ssh -o ConnectTimeout=4 -o BatchMode=yes "$h" "$cmd"; fi
   done
 }
 

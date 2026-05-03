@@ -12,8 +12,8 @@ PER_RUN_TIMEOUT=${PER_RUN_TIMEOUT:-300}
 PROTOS=${PROTOS:-"sync async qsync"}
 N_VALUES=${N_VALUES:-"3 4 5 6"}
 
-# Hosts in order: P0 = local, P1=ds15, ..., P6=ds11
-ALL_HOSTS=("ds26" "ds15" "ds16" "ds17" "ds18" "ds13" "ds11")
+# Hosts in order: P0 = local, P1=server1, ..., P6=server6
+ALL_HOSTS=("coord" "server1" "server2" "server3" "server4" "server5" "server6")
 
 OUT=/root/e1_sweep/results/e1_n_sweep_eno1
 mkdir -p $OUT/sync $OUT/qsync $OUT/async
@@ -34,7 +34,7 @@ cleanup() {
 
 active_hosts() {
   local n=$1
-  local arr=("ds15")
+  local arr=("server1")
   for ((i=2; i<=n; i++)); do arr+=("${ALL_HOSTS[$i]}"); done
   echo "${arr[@]}"
 }
@@ -80,7 +80,7 @@ run_async() {
 install_eno1_taprio() {
   local n=$1
   local total=$((n+1))
-  # ds15-pattern: gatemask 0x1 owner-slot, 0x2 others; map prio>=1 → tc1
+  # owner-slot pattern: gatemask 0x1 owner-slot, 0x2 others; map prio>=1 → tc1
   # Each host has 4 owner slots (262136 ns × 4 = 1.048ms), cycle = total × 4 × 262136 ns
   # Same as TSN config.
   local entries_per_owner=4
@@ -99,7 +99,7 @@ install_eno1_taprio() {
         entries+=" sched-entry S 0x2 ${entry_ns}"
       fi
     done
-    if [ "$h" = "ds26" ]; then
+    if [ "$h" = "coord" ]; then
       sudo tc qdisc replace dev eno1 parent root handle 100 taprio \
         num_tc 2 map 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 \
         queues 1@0 1@1 \
@@ -118,7 +118,7 @@ remove_eno1_taprio() {
   local total=$((n+1))
   for pid in $(seq 0 $((total-1))); do
     local h=${ALL_HOSTS[$pid]}
-    if [ "$h" = "ds26" ]; then
+    if [ "$h" = "coord" ]; then
       sudo tc qdisc replace dev eno1 root mq 2>/dev/null
     else
       ssh -o ConnectTimeout=4 -o BatchMode=yes "$h" "sudo tc qdisc replace dev eno1 root mq 2>/dev/null" &

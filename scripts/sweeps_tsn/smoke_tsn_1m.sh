@@ -13,7 +13,7 @@ NETCFG_REMOTE=/tmp/qsync_ae_net_configs/net_config_n3_tsn.json
 RDIR=/root/qsync-ae/results/smoke_tsn_1m
 rm -rf "$RDIR"; mkdir -p "$RDIR"
 
-ENO2_HOSTS=(ds15 ds16 ds17)
+ENO2_HOSTS=(server1 server2 server3)
 ENV="MPC_SO_PRIORITY=4 MPC_BROADCAST_IP=192.168.1.255 MPC_PAIR_KEY_SEED=200 MPC_NETWORK=tsn TDMA_SLOT_NS=1048544 TDMA_GUARD_NS=0"
 
 for h in "${ENO2_HOSTS[@]}"; do

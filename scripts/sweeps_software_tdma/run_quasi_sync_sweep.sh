@@ -25,7 +25,7 @@ for N in 3 4 5 6; do
 
   # Hard cleanup of any leftover state.
   pkill -9 -f asterisk_mpc 2>/dev/null || true
-  for h in ds15 ds16 ds17 ds18 ds13 ds11; do
+  for h in server1 server2 server3 server4 server5 server6; do
     ssh -o ConnectTimeout=3 "$h" "pkill -9 asterisk_mpc 2>/dev/null; true" 2>/dev/null &
   done
   wait || true

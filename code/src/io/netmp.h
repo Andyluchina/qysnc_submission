@@ -14,8 +14,8 @@
 //   TDMA_RETX_K_SEND       sender-side retx cap (default 5)
 //   TDMA_RETX_K_RECV       receiver-side retx cap (default 5)
 //   MPC_PAIR_KEY_SEED      AES-CTR key seed (default 200)
-//   MPC_BROADCAST_IP       broadcast dst IP (default 255.255.255.255 for
-//                          eno1; set to 192.168.1.255 for the TSN island)
+//   MPC_BROADCAST_IP       broadcast dst IP (override the default for the
+//                          interface chosen via MPC_NETWORK)
 
 #pragma once
 

@@ -17,7 +17,7 @@ S=${2:-16}
 REPEAT=${3:-1}
 N=${4:-5}
 
-HOSTS=("" "ds15" "ds16" "ds17" "ds18" "ds13" "ds11")
+HOSTS=("" "server1" "server2" "server3" "server4" "server5" "server6")
 
 TIMESRC_BACKEND=${TIMESRC_BACKEND:-fake}
 TIMESRC_WARMUP_MS=${TIMESRC_WARMUP_MS:-500}

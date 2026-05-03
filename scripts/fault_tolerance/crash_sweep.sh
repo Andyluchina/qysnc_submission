@@ -14,7 +14,7 @@
 #   = 6 + 20×5.24 + 1 = ~112 ms.
 set -u
 REPS=${REPS:-5}
-HOSTS=("ds26" "ds16" "ds17" "ds18")
+HOSTS=("coord" "server2" "server3" "server4")
 TOTAL=${#HOSTS[@]}
 N=3; G=2000; D=100; PER=60
 T_FAULT=3
@@ -55,14 +55,14 @@ for r in $(seq 1 $REPS); do
   done
   sleep 1
 
-  ssh -o ConnectTimeout=4 -o BatchMode=yes ds18 \
+  ssh -o ConnectTimeout=4 -o BatchMode=yes server4 \
     "$ENVS_BASE LD_LIBRARY_PATH=$REMOTE/lib timeout $PER $REMOTE/build/benchmarks/asterisk_mpc -p 3 --net-config $NETCONF -g $G -d $D -n $N -r 1 -t 6" \
     > "$RDIR/p3.log" 2>&1 &
-  ssh -o ConnectTimeout=4 -o BatchMode=yes ds17 \
+  ssh -o ConnectTimeout=4 -o BatchMode=yes server3 \
     "$ENVS_BASE LD_LIBRARY_PATH=$REMOTE/lib timeout $PER $REMOTE/build/benchmarks/asterisk_mpc -p 2 --net-config $NETCONF -g $G -d $D -n $N -r 1 -t 6" \
     > "$RDIR/p2.log" 2>&1 &
   sleep 0.2
-  ssh -o ConnectTimeout=4 -o BatchMode=yes ds16 \
+  ssh -o ConnectTimeout=4 -o BatchMode=yes server2 \
     "$ENVS_BASE LD_LIBRARY_PATH=$REMOTE/lib timeout $PER $REMOTE/build/benchmarks/asterisk_mpc -p 1 --net-config $NETCONF -g $G -d $D -n $N -r 1 -t 6" \
     > "$RDIR/p1.log" 2>&1 &
   sleep 0.5
